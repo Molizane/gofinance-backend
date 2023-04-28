@@ -22,4 +22,4 @@ server:
 sqlc-gen:
 	docker run --rm -v $$(pwd):/src -w /src kjconroy/sqlc generate
 
-.PHONY: createdb postgres dropdb migrateup migrationdrop test testpgsql server sqlc-gen
+.PHONY: createdb postgres migrateup migrationdrop test testpgsql server sqlc-gen
