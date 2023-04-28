@@ -1,17 +1,14 @@
 createdb:
 	createdb --username=postgres --owner=postgres go_finance
 
-postgres:
-	docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:14-alpine
-
 migrateup:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/go_finance?sslmode=disable" -verbose up
 
 migrationdrop:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/go_finance?sslmode=disable" -verbose down
 
-test:
-	go test -v -cover ./...
+postgres:
+	docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:14-alpine
 
 server:
 	go run main.go
@@ -19,4 +16,7 @@ server:
 sqlc-gen:
 	docker run --rm -v $$(pwd):/src -w /src kjconroy/sqlc generate
 
-.PHONY: createdb migrateup migrationdrop postgres test server sqlc-gen
+test:
+	go test -v -cover ./...
+
+.PHONY: createdb migrateup migrationdrop postgres server sqlc-gen test
