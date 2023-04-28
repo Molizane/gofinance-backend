@@ -40,6 +40,6 @@ jobs:
 
     - name: Run migrations
       run: make migrateup
-
+      
     - name: Run test
       run: make test
