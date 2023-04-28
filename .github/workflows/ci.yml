@@ -39,7 +39,9 @@ jobs:
         which migrate
 
     - name: Run migrations
-      run: make migrateup
-      
+      run: |
+        echo $$(pwd)
+        make migrateup
+
     - name: Run test
       run: make test
