@@ -1,13 +1,7 @@
 package main
 
+/*
 import (
-	"database/sql"
-	"gofinance-backend/api"
-	db "gofinance-backend/db/sqlc"
-	"log"
-	"os"
-
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -33,3 +27,4 @@ func main() {
 		log.Fatal("cannot start api: ", err)
 	}
 }
+*/
