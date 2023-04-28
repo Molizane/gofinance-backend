@@ -3,11 +3,11 @@ name: ci
 on:
   push:
     branches: [ main ]
+
   pull_request:
     branches: [ main ]
 
 jobs:
-
   test:
     name: Run test
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
     - name: Run migrations
       run: |
         pwd
-        ls -la
+        ls
         make migrateup
 
     - name: Run test
