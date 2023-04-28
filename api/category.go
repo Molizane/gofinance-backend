@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"net/http"
 
-	db "gofinance-backend/db/sqlc"
-	"gofinance-backend/util"
+	db "github.com/Molizane/gofinance-backend/db/sqlc"
+	"github.com/Molizane/gofinance-backend/util"
 
 	"github.com/gin-gonic/gin"
 )

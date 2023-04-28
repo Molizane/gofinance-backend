@@ -1,7 +1,13 @@
 package main
 
-/*
 import (
+	"database/sql"
+	"log"
+	"os"
+
+	"github.com/Molizane/gofinance-backend/api"
+	db "github.com/Molizane/gofinance-backend/db/sqlc"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -27,4 +33,3 @@ func main() {
 		log.Fatal("cannot start api: ", err)
 	}
 }
-*/

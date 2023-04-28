@@ -2,9 +2,10 @@ package db
 
 import (
 	"context"
-	"gofinance-backend/util"
 	"testing"
 	"time"
+
+	"github.com/Molizane/gofinance-backend/util"
 
 	"github.com/stretchr/testify/require"
 )

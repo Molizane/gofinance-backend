@@ -1,7 +1,7 @@
 package api
 
 import (
-	db "gofinance-backend/db/sqlc"
+	db "github.com/Molizane/gofinance-backend/db/sqlc"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,5 +61,5 @@ func (server *Server) Start(address string) error {
 }
 
 func errorResponse(err error) gin.H {
-	return gin.H{"api has error:": err.Error()}
+	return gin.H{"api has an error:": err.Error()}
 }

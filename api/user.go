@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"crypto/sha512"
 	"database/sql"
-	db "gofinance-backend/db/sqlc"
 	"net/http"
+
+	db "github.com/Molizane/gofinance-backend/db/sqlc"
 
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"

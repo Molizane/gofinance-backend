@@ -2,11 +2,12 @@ package api
 
 import (
 	"database/sql"
-	db "gofinance-backend/db/sqlc"
 	"net/http"
 	"time"
 
-	"gofinance-backend/util"
+	db "github.com/Molizane/gofinance-backend/db/sqlc"
+
+	"github.com/Molizane/gofinance-backend/util"
 
 	"github.com/gin-gonic/gin"
 )
