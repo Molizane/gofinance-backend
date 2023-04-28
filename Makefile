@@ -10,9 +10,6 @@ migrateup:
 migrationdrop:
 	migrate -path db/migration -database "postgresql://postgres:postgres@localhost:5432/go_finance?sslmode=disable" -verbose down
 
-# testpgsql:
-#   go test -timeout 30s -run ^TestMain$ ./db/sqlc
-
 test:
 	go test -v -cover ./...
 
@@ -22,4 +19,4 @@ server:
 sqlc-gen:
 	docker run --rm -v $$(pwd):/src -w /src kjconroy/sqlc generate
 
-.PHONY: createdb postgres migrateup migrationdrop test server sqlc-gen
+.PHONY: createdb postgres dropdb migrateup migrationdrop test server sqlc-gen
