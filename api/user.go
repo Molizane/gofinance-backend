@@ -42,7 +42,7 @@ type getUserRequest struct {
 	Username string `uri:"username" binding:"required"`
 }
 
-func (server *Server) GetUser(ctx *gin.Context) {
+func (server *Server) getUser(ctx *gin.Context) {
 	var req getUserRequest
 
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -69,7 +69,7 @@ type getUserByIdRequest struct {
 	ID int32 `uri:"id" binding:"required"`
 }
 
-func (server *Server) GetUserById(ctx *gin.Context) {
+func (server *Server) getUserById(ctx *gin.Context) {
 	var req getUserByIdRequest
 
 	if err := ctx.ShouldBindUri(&req); err != nil {

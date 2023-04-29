@@ -17,7 +17,7 @@ func createRandomAccount(t *testing.T) Account {
 		UserID:      category.UserID,
 		CategoryID:  category.ID,
 		Title:       util.RandomString(12),
-		Type:        "account",
+		Type:        "debit",
 		Description: util.RandomString(20),
 		Value:       100,
 		Date:        time.Now(),
