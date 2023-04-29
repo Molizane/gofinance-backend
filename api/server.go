@@ -17,7 +17,7 @@ func NewServer(store *db.SQLStore) *Server {
 
 	router.POST("/user", server.createUser)
 	router.GET("/user/:username", server.GetUser)
-	router.GET("/user/:id", server.GetUserById)
+	router.GET("/user/id/:id", server.GetUserById)
 
 	server.router = router
 	return server
@@ -28,5 +28,5 @@ func (server *Server) Start(address string) error {
 }
 
 func errorResponse(err error) gin.H {
-	return gin.H{"api has an error:": err.Error()}
+	return gin.H{"error:": err.Error()}
 }

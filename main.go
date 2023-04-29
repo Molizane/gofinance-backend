@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	"github.com/Molizane/gofinance-backend/api"
@@ -33,6 +32,4 @@ func main() {
 		log.Fatal("cannot start server:", err)
 		return
 	}
-
-	fmt.Println("Server running at: ", serverAddress)
 }
