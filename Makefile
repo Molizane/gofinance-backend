@@ -19,4 +19,7 @@ sqlc-gen:
 test:
 	go test -v -cover ./...
 
-.PHONY: createdb migrateup migrationdrop postgres server sqlc-gen test
+build:
+	go build
+
+.PHONY: createdb migrateup migrationdrop postgres server sqlc-gen test build
