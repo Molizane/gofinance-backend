@@ -11,46 +11,13 @@ type Server struct {
 	router *gin.Engine
 }
 
-func CORSConfig() gin.HandlerFunc {
-	return func(context *gin.Context) {
-		context.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		context.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		context.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-		context.Writer.Header().Set("Access-Control-Allow-Methods", "POST, DELETE, GET, PUT")
-
-		if context.Request.Method == "OPTIONS" {
-			context.AbortWithStatus(204)
-			return
-		}
-
-		context.Next()
-	}
-}
-
 func NewServer(store *db.SQLStore) *Server {
 	server := &Server{store: store}
 	router := gin.Default()
-	router.Use(CORSConfig())
 
 	router.POST("/user", server.createUser)
-	router.GET("/user/:username", server.getUser)
-	router.GET("/user/id/:id", server.getUserById)
-
-	router.POST("/category", server.createCategory)
-	router.GET("/category/id/:id", server.getCategory)
-	router.GET("/category", server.getCategories)
-	router.DELETE("/category/:id", server.deleteCategory)
-	router.PUT("/category/:id", server.updateCategory)
-
-	router.POST("/account", server.createAccount)
-	router.GET("/account/id/:id", server.getAccount)
-	router.GET("/account", server.getAccounts)
-	router.GET("/account/graph/:user_id/:type", server.getAccountGraph)
-	router.GET("/account/reports/:user_id/:type", server.getAccountReports)
-	router.DELETE("/account/:id", server.deleteAccount)
-	router.PUT("/account/:id", server.updateAccount)
-
-	router.POST("/login", server.login)
+	router.GET("/user/:username", server.GetUser)
+	router.GET("/user/:id", server.GetUserById)
 
 	server.router = router
 	return server
