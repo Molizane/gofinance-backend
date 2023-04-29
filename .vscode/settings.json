@@ -1,0 +1,13 @@
+{
+  "editor.cursorSmoothCaretAnimation": "explicit",
+  "editor.cursorStyle": "block",
+  "editor.fontFamily": "'Fira Code, Retina', 'Droid Sans Mono', 'monospace', monospace",
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "diffEditor.wordWrap": "off",
+  "prettier.insertPragma": true,
+  "markdown.preview.markEditorSelection": true,
+  "markdown.editor.drop.enabled": true,
+  "markdown.experimental.editor.pasteLinks.enabled": true
+}
