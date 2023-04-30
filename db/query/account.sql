@@ -21,7 +21,7 @@ AND a.category_id = COALESCE(sqlc.narg('category_id'), a.category_id)
 AND a.date = COALESCE(sqlc.narg('date'), a.date);
 
 -- name: GetAccountsReports :one
-SELECT SUM(value) AS sum_value
+SELECT COALLESCE(SUM(value), 0) AS sum_value
 FROM accounts
 WHERE user_id = $1
 AND type = $2;

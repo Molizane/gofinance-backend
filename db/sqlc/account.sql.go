@@ -178,7 +178,7 @@ func (q *Queries) GetAccountsGraph(ctx context.Context, arg GetAccountsGraphPara
 }
 
 const getAccountsReports = `-- name: GetAccountsReports :one
-SELECT SUM(value) AS sum_value
+SELECT COALESCE(SUM(value), 0) AS sum_value
 FROM accounts
 WHERE user_id = $1
 AND type = $2
