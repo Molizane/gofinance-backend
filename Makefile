@@ -11,7 +11,7 @@ postgres:
 	docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres:14-alpine
 
 server:
-	go run main.go
+	cls;go run main.go
 
 sqlc-gen:
 	docker run --rm -v $$(pwd):/src -w /src kjconroy/sqlc generate
