@@ -164,3 +164,61 @@ func (server *Server) updateAccount(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, account)
 }
+
+type getAccountsGraphRequest struct {
+	UserID int32  `uri:"user_id" binding:"required"`
+	Type   string `uri:"type" binding:"required"`
+}
+
+func (server *Server) getAccountsGraph(ctx *gin.Context) {
+	var req getAccountsGraphRequest
+	err := ctx.ShouldBindUri(&req)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := db.GetAccountsGraphParams{
+		UserID: req.UserID,
+		Type:   req.Type,
+	}
+
+	accountGraph, err := server.store.GetAccountsGraph(ctx, arg)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, accountGraph)
+}
+
+type getAccountsReportRequests struct {
+	UserID int32  `uri:"user_id" binding:"required"`
+	Type   string `uri:"type" binding:"required"`
+}
+
+func (server *Server) getAccountsReports(ctx *gin.Context) {
+	var req getAccountsReportRequests
+	err := ctx.ShouldBindUri(&req)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	arg := db.GetAccountsReportsParams{
+		UserID: req.UserID,
+		Type:   req.Type,
+	}
+
+	sumAccountReport, err := server.store.GetAccountsReports(ctx, arg)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, sumAccountReport)
+}
