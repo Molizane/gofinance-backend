@@ -33,6 +33,8 @@ func NewServer(store *db.SQLStore) *Server {
 	router.DELETE("/account/:id", server.deleteAccount)
 	router.PUT("/account/:id", server.updateAccount)
 
+	router.POST("/login", server.login)
+
 	server.router = router
 	return server
 }
@@ -43,4 +45,8 @@ func (server *Server) Start(address string) error {
 
 func errorResponse(err error) gin.H {
 	return gin.H{"error": err.Error()}
+}
+
+func errorResponseStr(err string) gin.H {
+	return gin.H{"error": err}
 }
