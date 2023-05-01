@@ -83,77 +83,6 @@ func (server *Server) getCategories(ctx *gin.Context) {
 		return
 	}
 
-	if len(req.Title) == 0 && len(req.Description) == 0 {
-		arg := db.GetCategoriesByUserIdAndTypeParams{
-			UserID: req.UserID,
-			Type:   req.Type,
-		}
-
-		category, err := server.store.GetCategoriesByUserIdAndType(ctx, arg)
-
-		if err != nil {
-			if err == sql.ErrNoRows {
-				ctx.JSON(http.StatusNotFound, errorResponse(err))
-				return
-			}
-
-			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-			return
-		}
-
-		ctx.JSON(http.StatusOK, category)
-
-		return
-	}
-
-	if len(req.Title) == 0 && len(req.Description) != 0 {
-		arg := db.GetCategoriesByUserIdAndTypeAndDescriptionParams{
-			UserID: req.UserID,
-			Type:   req.Type,
-			Description: req.Description,
-		}
-
-		category, err := server.store.GetCategoriesByUserIdAndTypeAndDescription(ctx, arg)
-
-		if err != nil {
-			if err == sql.ErrNoRows {
-				ctx.JSON(http.StatusNotFound, errorResponse(err))
-				return
-			}
-
-			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-			return
-		}
-
-		ctx.JSON(http.StatusOK, category)
-
-		return
-	}
-
-	if len(req.Title) != 0 && len(req.Description) == 0 {
-		arg := db.GetCategoriesByUserIdAndTypeAndTitleParams{
-			UserID: req.UserID,
-			Type:   req.Type,
-			Title: req.Title,
-		}
-
-		category, err := server.store.GetCategoriesByUserIdAndTypeAndTitle(ctx, arg)
-
-		if err != nil {
-			if err == sql.ErrNoRows {
-				ctx.JSON(http.StatusNotFound, errorResponse(err))
-				return
-			}
-
-			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-			return
-		}
-
-		ctx.JSON(http.StatusOK, category)
-
-		return
-	}
-
 	arg := db.GetCategoriesParams{
 		UserID:      req.UserID,
 		Type:        req.Type,
@@ -164,11 +93,6 @@ func (server *Server) getCategories(ctx *gin.Context) {
 	categories, err := server.store.GetCategories(ctx, arg)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return
-		}
-
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
