@@ -17,11 +17,11 @@ WHERE a.user_id = @user_id
 AND a.type = @type
 AND LOWER(a.title) LIKE CONCAT('%', LOWER(@title::text), '%')
 AND LOWER(a.description) LIKE CONCAT('%', LOWER(@description::text), '%')
-AND a.category_id = COALLESCE(@category_id, a.category_id)
-AND a.date = COALLESCE(@date, a.date);
+AND a.category_id = COALESCE(sqlc.narg('category_id')::int, a.category_id)
+AND a.date = COALESCE(sqlc.narg('date')::date, a.date);
 
 -- name: GetAccountsReports :one
-SELECT COALLESCE(SUM(value), 0) AS sum_value
+SELECT COALESCE(SUM(value), 0) AS sum_value
 FROM accounts
 WHERE user_id = $1
 AND type = $2;

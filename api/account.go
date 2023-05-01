@@ -106,22 +106,23 @@ func (server *Server) getAccounts(ctx *gin.Context) {
 	var accounts []db.GetAccountsRow
 
 	arg := db.GetAccountsParams{
-		UserID:      req.UserID,
-		Type:        req.Type,
+		UserID: req.UserID,
+		Type:   req.Type,
+		CategoryID: sql.NullInt32{
+			Int32: req.CategoryID,
+			Valid: req.CategoryID > 0,
+		},
 		Title:       req.Title,
 		Description: req.Description,
-		CategoryID:  req.CategoryID,
-		Date:        req.Date,
+		Date: sql.NullTime{
+			Time:  req.Date,
+			Valid: !req.Date.IsZero(),
+		},
 	}
 
 	accounts, err := server.store.GetAccounts(ctx, arg)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, errorResponse(err))
-			return
-		}
-
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}

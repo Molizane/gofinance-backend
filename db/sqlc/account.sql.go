@@ -94,17 +94,17 @@ WHERE a.user_id = $1
 AND a.type = $2
 AND LOWER(a.title) LIKE CONCAT('%', LOWER($3::text), '%')
 AND LOWER(a.description) LIKE CONCAT('%', LOWER($4::text), '%')
-AND a.category_id = COALLESCE($5, a.category_id)
-AND a.date = COALLESCE($6, a.date)
+AND a.category_id = COALESCE($5::int, a.category_id)
+AND a.date = COALESCE($6::date, a.date)
 `
 
 type GetAccountsParams struct {
-	UserID      int32       `json:"user_id"`
-	Type        string      `json:"type"`
-	Title       string      `json:"title"`
-	Description string      `json:"description"`
-	CategoryID  interface{} `json:"category_id"`
-	Date        interface{} `json:"date"`
+	UserID      int32         `json:"user_id"`
+	Type        string        `json:"type"`
+	Title       string        `json:"title"`
+	Description string        `json:"description"`
+	CategoryID  sql.NullInt32 `json:"category_id"`
+	Date        sql.NullTime  `json:"date"`
 }
 
 type GetAccountsRow struct {
@@ -178,7 +178,7 @@ func (q *Queries) GetAccountsGraph(ctx context.Context, arg GetAccountsGraphPara
 }
 
 const getAccountsReports = `-- name: GetAccountsReports :one
-SELECT COALLESCE(SUM(value), 0) AS sum_value
+SELECT COALESCE(SUM(value), 0) AS sum_value
 FROM accounts
 WHERE user_id = $1
 AND type = $2
