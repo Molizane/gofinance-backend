@@ -76,9 +76,81 @@ type getCategoriesRequest struct {
 
 func (server *Server) getCategories(ctx *gin.Context) {
 	var req getCategoriesRequest
+	var categories []db.Category
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		return
+	}
+
+	if len(req.Title) == 0 && len(req.Description) == 0 {
+		arg := db.GetCategoriesByUserIdAndTypeParams{
+			UserID: req.UserID,
+			Type:   req.Type,
+		}
+
+		category, err := server.store.GetCategoriesByUserIdAndType(ctx, arg)
+
+		if err != nil {
+			if err == sql.ErrNoRows {
+				ctx.JSON(http.StatusNotFound, errorResponse(err))
+				return
+			}
+
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, category)
+
+		return
+	}
+
+	if len(req.Title) == 0 && len(req.Description) != 0 {
+		arg := db.GetCategoriesByUserIdAndTypeAndDescriptionParams{
+			UserID: req.UserID,
+			Type:   req.Type,
+			Description: req.Description,
+		}
+
+		category, err := server.store.GetCategoriesByUserIdAndTypeAndDescription(ctx, arg)
+
+		if err != nil {
+			if err == sql.ErrNoRows {
+				ctx.JSON(http.StatusNotFound, errorResponse(err))
+				return
+			}
+
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, category)
+
+		return
+	}
+
+	if len(req.Title) != 0 && len(req.Description) == 0 {
+		arg := db.GetCategoriesByUserIdAndTypeAndTitleParams{
+			UserID: req.UserID,
+			Type:   req.Type,
+			Title: req.Title,
+		}
+
+		category, err := server.store.GetCategoriesByUserIdAndTypeAndTitle(ctx, arg)
+
+		if err != nil {
+			if err == sql.ErrNoRows {
+				ctx.JSON(http.StatusNotFound, errorResponse(err))
+				return
+			}
+
+			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+			return
+		}
+
+		ctx.JSON(http.StatusOK, category)
+
 		return
 	}
 
@@ -89,7 +161,7 @@ func (server *Server) getCategories(ctx *gin.Context) {
 		Description: req.Description,
 	}
 
-	category, err := server.store.GetCategories(ctx, arg)
+	categories, err := server.store.GetCategories(ctx, arg)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -101,7 +173,7 @@ func (server *Server) getCategories(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, category)
+	ctx.JSON(http.StatusOK, categories)
 }
 
 func (server *Server) deleteCategory(ctx *gin.Context) {
