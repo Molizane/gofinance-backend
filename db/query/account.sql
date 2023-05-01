@@ -17,75 +17,8 @@ WHERE a.user_id = @user_id
 AND a.type = @type
 AND LOWER(a.title) LIKE CONCAT('%', LOWER(@title::text), '%')
 AND LOWER(a.description) LIKE CONCAT('%', LOWER(@description::text), '%')
-AND a.category_id = @category_id
-AND a.date = @date;
-
--- name: GetAccountsByUserIdAndType :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type;
-
--- name: GetAccountsByUserIdAndTypeAndCategoryId :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND a.category_id = @category_id;
-
--- name: GetAccountsByUserIdAndTypeAndCategoryIdAndTitle :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND a.category_id = @category_id
-AND LOWER(a.title) LIKE CONCAT('%', LOWER(@title::text), '%');
-
--- name: GetAccountsByUserIdAndTypeAndCategoryIdAndDescription :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND a.category_id = @category_id
-AND LOWER(a.description) LIKE CONCAT('%', LOWER(@description::text), '%');
-
--- name: GetAccountsByUserIdAndTypeAndDescription :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND LOWER(a.description) LIKE CONCAT('%', LOWER(@description::text), '%');
-
--- name: GetAccountsByUserIdAndTypeAndTitle :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND LOWER(a.title) LIKE CONCAT('%', LOWER(@title::text), '%');
-
--- name: GetAccountsByUserIdAndTypeAndCategoryIdAndTitleAndDescription :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND a.category_id = @category_id
-AND LOWER(a.title) LIKE CONCAT('%', LOWER(@title::text), '%')
-AND LOWER(a.description) LIKE CONCAT('%', LOWER(@description::text), '%');
-
--- name: GetAccountsByUserIdAndTypeAndDate :many
-SELECT a.id, a.user_id, a.title, a.type, a.description, a.value, a.date, a.created_at, c.title as category_title
-FROM accounts a
-LEFT JOIN categories c ON c.id = a.category_id
-WHERE a.user_id = @user_id
-AND a.type = @type
-AND a.date = @date;
+AND a.category_id = COALLESCE(@category_id, a.category_id)
+AND a.date = COALLESCE(@date, a.date);
 
 -- name: GetAccountsReports :one
 SELECT COALLESCE(SUM(value), 0) AS sum_value
