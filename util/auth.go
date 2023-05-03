@@ -1,6 +1,7 @@
 package util
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -16,6 +17,7 @@ type Claims struct {
 func ValidateToken(ctx *gin.Context, token string) error {
 	claims := &Claims{}
 	var jwtSignedKey = []byte("secret_key")
+
 	tokenParse, err := jwt.ParseWithClaims(token, claims,
 		func(t *jwt.Token) (interface{}, error) {
 			return jwtSignedKey, nil
@@ -23,16 +25,17 @@ func ValidateToken(ctx *gin.Context, token string) error {
 
 	if err != nil {
 		if err == jwt.ErrSignatureInvalid {
-			ctx.JSON(http.StatusUnauthorized, err)
+			ctx.JSON(http.StatusUnauthorized, err.Error())
 			return err
 		}
-		ctx.JSON(http.StatusBadRequest, err)
+
+		ctx.JSON(http.StatusBadRequest, err.Error())
 		return err
 	}
 
 	if !tokenParse.Valid {
-		ctx.JSON(http.StatusUnauthorized, "Token is invalid")
-		return nil
+		ctx.JSON(http.StatusUnauthorized, "token is invalid")
+		return errors.New("token is invalid")
 	}
 
 	ctx.Next()
@@ -42,10 +45,15 @@ func ValidateToken(ctx *gin.Context, token string) error {
 func GetTokenInHeaderAndVerify(ctx *gin.Context) error {
 	authorizationHeaderKey := ctx.GetHeader("authorization")
 	fields := strings.Fields(authorizationHeaderKey)
-	tokenToValidate := fields[1]
-	errOnValiteToken := ValidateToken(ctx, tokenToValidate)
-	if errOnValiteToken != nil {
-		return errOnValiteToken
+
+	if len(fields) < 2 {
+		err := errors.New(" Please, login")
+		ctx.JSON(http.StatusBadRequest, err)
+		return err
 	}
-	return nil
+
+	tokenToValidate := fields[1]
+	err := ValidateToken(ctx, tokenToValidate)
+
+	return err
 }

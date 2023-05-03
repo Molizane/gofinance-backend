@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	db "github.com/Molizane/gofinance-backend/db/sqlc"
+	"github.com/Molizane/gofinance-backend/util"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -58,6 +59,12 @@ type getUserRequest struct {
 }
 
 func (server *Server) getUser(ctx *gin.Context) {
+	err := util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
+
 	var req getUserRequest
 
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -105,4 +112,9 @@ func (server *Server) getUserById(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, user)
+	err = util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
 }

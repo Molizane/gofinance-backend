@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	db "github.com/Molizane/gofinance-backend/db/sqlc"
+	"github.com/Molizane/gofinance-backend/util"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +17,12 @@ type createCategoryRequest struct {
 }
 
 func (server *Server) createCategory(ctx *gin.Context) {
+	err := util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
+
 	var req createCategoryRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -45,6 +52,12 @@ type getCategoryRequest struct {
 }
 
 func (server *Server) getCategory(ctx *gin.Context) {
+	err := util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
+
 	var req getCategoryRequest
 
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -75,6 +88,12 @@ type getCategoriesRequest struct {
 }
 
 func (server *Server) getCategories(ctx *gin.Context) {
+	err := util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
+
 	var req getCategoriesRequest
 	var categories []db.Category
 
@@ -90,7 +109,7 @@ func (server *Server) getCategories(ctx *gin.Context) {
 		Description: req.Description,
 	}
 
-	categories, err := server.store.GetCategories(ctx, arg)
+	categories, err = server.store.GetCategories(ctx, arg)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
@@ -101,6 +120,12 @@ func (server *Server) getCategories(ctx *gin.Context) {
 }
 
 func (server *Server) deleteCategory(ctx *gin.Context) {
+	err := util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
+
 	var req getCategoryRequest
 
 	if err := ctx.ShouldBindUri(&req); err != nil {
@@ -108,7 +133,7 @@ func (server *Server) deleteCategory(ctx *gin.Context) {
 		return
 	}
 
-	err := server.store.DeleteCategories(ctx, req.ID)
+	err = server.store.DeleteCategories(ctx, req.ID)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
@@ -125,6 +150,12 @@ type updateCategoriesRequest struct {
 }
 
 func (server *Server) updateCategory(ctx *gin.Context) {
+	err := util.GetTokenInHeaderAndVerify(ctx)
+
+	if err != nil {
+		return
+	}
+
 	var req updateCategoriesRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
