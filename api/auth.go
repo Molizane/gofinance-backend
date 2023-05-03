@@ -22,6 +22,11 @@ type loginRequest struct {
 	Password string `json:"password" binding:"required"`
 }
 
+type loginRespone struct {
+	UserID int32  `json:"user_id" binding:"required"`
+	Token  string `json:"token" binding:"required"`
+}
+
 func (server *Server) login(ctx *gin.Context) {
 	var req loginRequest
 
@@ -73,5 +78,10 @@ func (server *Server) login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, generatedTokenToString)
+	var arg = &loginRespone{
+		UserID: user.ID,
+		Token:  generatedTokenToString,
+	}
+
+	ctx.JSON(http.StatusOK, arg)
 }
