@@ -32,7 +32,7 @@ func main() {
 	store := db.NewStore(conn)
 	server := api.NewServer(store)
 
-	err = server.Start(serverAddress)
+	err = server.Router.Run(serverAddress)
 
 	if err != nil {
 		log.Fatal("cannot start server: ", err)

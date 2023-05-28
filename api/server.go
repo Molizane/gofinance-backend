@@ -9,7 +9,7 @@ import (
 
 type Server struct {
 	store  *db.SQLStore
-	router *gin.Engine
+	Router *gin.Engine
 }
 
 func CORSConfig() gin.HandlerFunc {
@@ -53,16 +53,22 @@ func NewServer(store *db.SQLStore) *Server {
 
 	router.POST("/login", server.login)
 
-	server.router = router
+	server.Router = router
 	return server
 }
 
 func (server *Server) Start(address string) error {
-	return server.router.Run(address)
+	return server.Router.Run(address)
 }
 
-func errorResponse(err error) gin.H {
-	return gin.H{"error": err.Error()}
+func errorResponse(err error, extra ...string) gin.H {
+	erro := err.Error()
+
+	for _, ex := range extra {
+		erro += "\n" + ex
+	}
+
+	return gin.H{"error": erro}
 }
 
 func errorResponseStr(err string) gin.H {
