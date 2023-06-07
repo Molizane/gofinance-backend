@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"crypto/sha512"
 	"database/sql"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -31,7 +32,7 @@ func (server *Server) login(ctx *gin.Context) {
 	var req loginRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, errorResponse(err))
+		ctx.JSON(http.StatusBadRequest, errorResponse(err, "ctx.ShouldBindJSON"))
 		return
 	}
 
@@ -40,10 +41,12 @@ func (server *Server) login(ctx *gin.Context) {
 	if err != nil {
 		if err == sql.ErrNoRows {
 			ctx.JSON(http.StatusUnauthorized, errorResponseStr("Invalid username or password"))
+			fmt.Print("Erro in server.store.GetUser - Invalid username or password - ", req.Username, "\n")
 			return
 		}
 
-		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err, "server.store.GetUser"))
+    fmt.Print("Error in server.store.GetUser")
 		return
 	}
 
@@ -57,6 +60,7 @@ func (server *Server) login(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, errorResponseStr("Invalid username or password"))
+    fmt.Print("Error in bcrypt.CompareHashAndPassword\n")
 		return
 	}
 
@@ -75,6 +79,7 @@ func (server *Server) login(ctx *gin.Context) {
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+    fmt.Print("Error in generatedToken.SignedString")
 		return
 	}
 

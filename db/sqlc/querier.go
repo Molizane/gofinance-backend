@@ -24,6 +24,8 @@ type Querier interface {
 	GetUserById(ctx context.Context, id int32) (User, error)
 	UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error)
 	UpdateCategories(ctx context.Context, arg UpdateCategoriesParams) (Category, error)
+	UpdatePassword(ctx context.Context, arg UpdatePasswordParams) (User, error)
+	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 }
 
 var _ Querier = (*Queries)(nil)

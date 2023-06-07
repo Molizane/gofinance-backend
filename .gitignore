@@ -21,7 +21,6 @@
 
 # Go workspace file
 go.work
-gofinance-backend
 
 bin/
 tmp/
